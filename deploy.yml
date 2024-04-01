@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gomatrixcloner
+  namespace: bots
+  labels:
+    k8s-app: gomatrixcloner
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      k8s-app: gomatrixcloner
+  template:
+    metadata:
+      labels:
+        k8s-app: gomatrixcloner
+    spec:
+      containers:
+      - name: gomatrixcloner
+        image: idanoo/gomatrixcloner:latest
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: gomatrixcloner-config
+            mountPath: "/data"
+        env:
+          - name: PUID
+            value: "1026"
+          - name: PGID
+            value: "65536"
+          - name: TZ
+            value: ""
+          - name: MATRIX_HOST
+            value: ""
+          - name: MATRIX_USERNAME
+            value: ""
+          - name: MATRIX_PASSWORD
+            value: ""
+          - name: MATRIX_SOURCE_ROOM
+            value: "!example:example.com"
+          - name: MATRIX_DESTINATION_ROOM
+            value: "!example:example.com"
+      volumes:
+        - name: gomatrixcloner-config
+          nfs:
+            server: xxxx
+            path: /xxxx

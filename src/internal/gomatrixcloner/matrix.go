@@ -145,6 +145,8 @@ func Run() {
 		}
 	}
 
+	mtrx.sendMessage(context.Background(), mtrx.toRoom, "Bridge reloaded 👌")
+
 	// Keep it running!!
 	mtrx.quitMeDaddy = make(chan struct{})
 	for {
@@ -178,7 +180,7 @@ func (mtrx *MtrxClient) handleMessageEvent(ctx context.Context, evt *event.Event
 	}
 
 	mtrx.sendMessage(ctx, mtrx.toRoom, fmt.Sprintf(
-		"%s: %s",
+		"%s:\n%s",
 		evt.Sender.Localpart(),
 		evt.Content.AsMessage().Body,
 	))
